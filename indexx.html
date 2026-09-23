@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>voidDLC — App</title>
+<style>
+  :root{
+    --bg:#0b0d14; --bg2:#12141f; --card:#151827; --line:#252a40;
+    --vio:#8b5cf6; --vio2:#a78bfa; --gold:#e7be4c; --on:#34d399;
+    --tx:#e4e4f0; --mut:#8482a0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{background:var(--bg);color:var(--tx);font-family:-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+       padding:14px 14px 90px;min-height:100vh;
+       background-image:radial-gradient(600px 300px at 50% -50px,rgba(139,92,246,.25),transparent),
+                        radial-gradient(500px 260px at 50% 110%,rgba(139,92,246,.12),transparent)}
+  .brand{text-align:center;padding:10px 0 4px}
+  .logo{width:64px;height:64px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;
+        background:radial-gradient(circle at 35% 30%,#2a2d40,#12131f);border:2px solid var(--vio);
+        box-shadow:0 0 24px rgba(139,92,246,.55);font-weight:800;font-size:30px;color:#fff}
+  .brand h1{font-size:26px;letter-spacing:1px;text-shadow:0 0 14px rgba(139,92,246,.8)}
+  .brand p{color:var(--mut);font-size:12px;margin-top:3px}
+  .tabs{display:flex;gap:6px;overflow-x:auto;padding:12px 0;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{flex:0 0 auto;padding:8px 14px;border-radius:12px;background:var(--bg2);border:1px solid var(--line);
+       color:var(--mut);font-size:13px;font-weight:600;cursor:pointer}
+  .tab.act{color:#fff;border-color:var(--vio);background:rgba(139,92,246,.15);box-shadow:0 0 12px rgba(139,92,246,.25)}
+  .page{display:none;animation:fade .25s}
+  .page.act{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+  .card h3{font-size:16px;margin-bottom:6px}
+  .card p{color:var(--mut);font-size:13px;line-height:1.5}
+  .price{font-size:22px;font-weight:800;color:var(--gold);margin:8px 0 2px}
+  .old{color:var(--mut);text-decoration:line-through;font-size:13px;font-weight:400;margin-left:6px}
+  .btn{display:block;width:100%;text-align:center;padding:12px;border-radius:12px;border:none;font-size:14px;font-weight:700;
+       margin-top:10px;cursor:pointer;color:#fff}
+  .btn.vio{background:linear-gradient(135deg,#7c3aed,#8b5cf6);box-shadow:0 4px 18px rgba(124,58,237,.4)}
+  .btn.gold{background:linear-gradient(135deg,#b8860b,#e7be4c);color:#171204;box-shadow:0 4px 18px rgba(231,190,76,.3)}
+  .btn.ghost{background:var(--bg2);border:1px solid var(--line);color:var(--tx)}
+  .promo{display:inline-block;background:rgba(231,190,76,.12);border:1px dashed var(--gold);color:var(--gold);
+         padding:3px 10px;border-radius:8px;font-size:12px;font-weight:700;margin-top:8px}
+  .mods{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .mod{background:var(--bg2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12.5px}
+  .mod.hot{border-color:var(--gold);color:var(--gold)}
+  .cat{color:var(--vio2);font-weight:800;font-size:13px;margin:14px 0 8px;letter-spacing:.5px}
+  .qa b{color:var(--tx);display:block;margin-bottom:4px}
+  .qa{margin-bottom:14px}
+  .drop{background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(139,92,246,.12));border:1px solid var(--on);
+        border-radius:16px;padding:16px;text-align:center}
+  .drop .code{font-family:ui-monospace,Consolas,monospace;font-size:15px;color:var(--on);font-weight:700;
+        background:rgba(0,0,0,.35);padding:8px;border-radius:10px;margin:10px 0}
+  .foot{text-align:center;color:var(--mut);font-size:11px;margin-top:20px}
+  .badge{display:inline-block;background:rgba(139,92,246,.18);color:var(--vio2);border-radius:8px;
+         padding:2px 8px;font-size:11px;font-weight:700;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="brand">
+  <div class="logo">V</div>
+  <h1>voidDLC</h1>
+  <p>обходим сервера — чит на уровне Дельты или же Харуки</p>
+</div>
+
+<div class="tabs" id="tabs">
+  <div class="tab act" data-p="buy">Купить</div>
+  <div class="tab" data-p="drops">Drops</div>
+  <div class="tab" data-p="mods">78 модулей</div>
+  <div class="tab" data-p="faq">FAQ</div>
+</div>
+
+<div class="page act" id="p-buy">
+  <div class="card">
+    <h3>Ключ на 25 дней <span class="badge">автовыдача</span></h3>
+    <div class="price">60 ⭐ <span class="old">или 3.00$ TON</span></div>
+    <p>Полный доступ на 25 дней. Оплатил — ключ сразу в чате.</p>
+    <button class="btn vio" onclick="go('stars25')">Оплатить 60 ⭐</button>
+    <button class="btn ghost" onclick="go('ton25')">Оплатить TON</button>
+  </div>
+  <div class="card">
+    <h3>Навсегда <span class="badge">автовыдача</span></h3>
+    <div class="price">150 ⭐ <span class="old">или 6.00$ TON</span></div>
+    <p>Бессрочный доступ. Один ключ работает на 2 ПК.</p>
+    <button class="btn vio" onclick="go('starslife')">Оплатить 150 ⭐</button>
+    <button class="btn ghost" onclick="go('tonlife')">Оплатить TON</button>
+  </div>
+  <div class="card">
+    <p>Промокод снижает цену на 36% для оплаты TON:</p>
+    <span class="promo">voidDLC −36%</span>
+  </div>
+</div>
+
+<div class="page" id="p-drops">
+  <div class="drop">
+    <h3>🎁 DROPS — раздача ключей</h3>
+    <p style="margin-top:6px">Бесплатные ключи на 40 дней разыгрываются по кодам в канале и у бота.</p>
+    <div class="code">drop-free-…</div>
+    <button class="btn gold" onclick="go('drops')">Открыть Drops в боте</button>
+  </div>
+  <div class="card" style="margin-top:12px">
+    <h3>🎮 Мини-игра</h3>
+    <p>3 сундука — в одном ключ на 1 день. Попробуй удачу в боте, раз в 2 часа.</p>
+    <button class="btn vio" onclick="go('game')">Играть</button>
+  </div>
+  <div class="card">
+    <h3>🎡 Крутелка</h3>
+    <p>Раз в 24 часа: ключи на 1 день и заморозка подписки. Запас общий с сайтом.</p>
+    <button class="btn ghost" onclick="go('spin')">Крутить</button>
+  </div>
+</div>
+
+<div class="page" id="p-mods">
+  <div id="mods"></div>
+</div>
+
+<div class="page" id="p-faq">
+  <div class="card qa"><h3>На каких версиях работает?</h3><p>Minecraft 1.21.4, Fabric Loader + Fabric API, Java 21.</p></div>
+  <div class="card qa"><h3>Не запускается / чёрный экран?</h3><p>Fabric точно 1.21.4, Fabric API в mods/, старые voidDLC из mods/ удалить — остаётся один jar.</p></div>
+  <div class="card qa"><h3>ServerGuard надо настраивать?</h3><p>Нет. Обычные серверы — безопасный профиль; FunTime, SpookyTime, ReallyWorld, HolyWorld — хардкор включается сам.</p></div>
+  <div class="card qa"><h3>Где настройки?</h3><p>.minecraft/config/voidDLC/: конфиг, binds.json, профили отдельными JSON. Последний профиль грузится сам.</p></div>
+  <div class="card qa"><h3>Почему свой шрифт?</h3><p>VoidFont растеризует Inter/Rajdhani/Orbitron сам, в native-разрешении — текст всегда чёткий.</p></div>
+</div>
+
+<div class="foot">voidDLC 2.2.0 · 78 модулей · 6 категорий · свой GUI и шрифты</div>
+
+<script>
+(function(){
+  var t = document.getElementById('tabs');
+  t.addEventListener('click', function(e){
+    var el = e.target.closest('.tab'); if(!el) return;
+    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('act')});
+    el.classList.add('act');
+    document.querySelectorAll('.page').forEach(function(x){x.classList.remove('act')});
+    document.getElementById('p-' + el.dataset.p).classList.add('act');
+    window.scrollTo(0,0);
+  });
+
+  var MODS = {
+    Combat:["Kill Aura","Trigger Bot","Criticals","Velocity","Auto Clicker","Auto Block","Auto Sword","Auto Tool","Reach","Hit Box","Arrows","Auto Armor","Server Guard"],
+    Move:["Speed","Fly","Boat Fly","Elytra Fly","Long Jump","Spider","Step","Jesus","No Clip","Safe Walk","Scaffold","Breadcrumbs"],
+    Render:["Target Hud","Target Esp","Player Esp","Mob Esp","Item Esp","Chest Esp","Skeleton Esp","Animal Esp","Tracers","Name Tags","Chams","Full Bright","XRay","Zoom"],
+    World:["New Chunks","Cave Finder","Stash Finder","Storage Esp","Chest Stealer","Auto Farm","Auto Mine","Auto Build","Auto Craft","Auto Smelt","Auto Trade","Auto Enchant","Trajectories","Time Changer"],
+    Player:["Auto Eat","Auto Fish","Auto Potion","Auto Totem","Auto Gapple","Auto Reconnect","Auto Respawn","Auto Leave","Auto Log","Anti Afk","Free Cam","Fake Player"],
+    Misc:["Anti Knockback","Anti Void","Auto Breed","Auto Shear","Custom Fov","Fast Place","No Fall","No Hurt Cam","No Render","No Slow","No Weather","Watermark","Weather Changer"]
+  };
+  var HOT = {"Kill Aura":1,"Server Guard":1,"Target Hud":1,"Elytra Fly":1,"XRay":1};
+  var box = document.getElementById('mods'), html = '';
+  for (var c in MODS){
+    html += '<div class="cat">▸ ' + c + '</div><div class="mods">';
+    MODS[c].forEach(function(m){
+      html += '<div class="mod' + (HOT[m] ? ' hot' : '') + '">' + m + '</div>';
+    });
+    html += '</div>';
+  }
+  box.innerHTML = html;
+
+  function bot(path){ window.open('https://t.me/voidDLCbot?start=' + path, '_blank'); }
+  window.go = function(what){
+    try{
+      var tg = window.Telegram && Telegram.WebApp;
+      if (what === 'stars25') bot('buy');
+      else if (what === 'starslife') bot('buy');
+      else if (what === 'ton25') bot('buy');
+      else if (what === 'tonlife') bot('buy');
+      else if (what === 'drops') bot('app_drops');
+      else if (what === 'game') bot('app_game');
+      else if (what === 'spin') bot('app_spin');
+      if (tg && tg.close && what === 'close') tg.close();
+    }catch(e){ }
+  };
+
+  try{
+    var tg = window.Telegram && Telegram.WebApp;
+    if (tg){ tg.expand(); tg.setHeaderColor && tg.setHeaderColor('#0b0d14'); tg.setBackgroundColor && tg.setBackgroundColor('#0b0d14'); }
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
